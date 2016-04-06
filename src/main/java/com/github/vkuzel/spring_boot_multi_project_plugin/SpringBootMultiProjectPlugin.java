@@ -6,14 +6,18 @@ import com.github.vkuzel.spring_boot_multi_project_plugin.utils.PluginUtils;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaPlugin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.gradle.dependencymanagement.DependencyManagementPluginFeatures;
 
 import java.util.Set;
 
 public class SpringBootMultiProjectPlugin implements Plugin<Project> {
 
-    private static final String CORE_PROJECT_NAME_PROPERTY = "coreProject";
-    private static final String CORE_PROJECT_DEFAULT_NAME = "core-module"; // TODO Different default name of core project (maybe just a core).
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpringBootMultiProjectPlugin.class);
+
+    private static final String SPRING_BOOT_PROJECT_NAME_PROPERTY = "springBootProject";
+    private static final String SPRING_BOOT_PROJECT_DEFAULT_NAME = "core";
 
     @Override
     public void apply(Project rootProject) {
@@ -26,10 +30,15 @@ public class SpringBootMultiProjectPlugin implements Plugin<Project> {
             project.getPlugins().apply(JavaPlugin.class);
         });
 
-        String coreProjectName = PluginUtils.getExtraProperty(rootProject, CORE_PROJECT_NAME_PROPERTY, CORE_PROJECT_DEFAULT_NAME);
-        Project coreProject = rootProject.findProject(coreProjectName);
+        String springBootProjectName = PluginUtils.getExtraProperty(rootProject, SPRING_BOOT_PROJECT_NAME_PROPERTY, SPRING_BOOT_PROJECT_DEFAULT_NAME);
+        LOGGER.debug("SpringBoot project name: " + springBootProjectName);
+        Project springBootProject = rootProject.findProject(springBootProjectName);
 
-        new DependencyTreePluginFeatures().apply(coreProject);
-        new SpringBootPluginFeatures().apply(rootProject, coreProject);
+        if (rootProject.equals(springBootProject)) {
+            LOGGER.warn("SpringBoot project is same as root project which does not make too much sense!");
+        }
+
+        new DependencyTreePluginFeatures().apply(springBootProject);
+        new SpringBootPluginFeatures().apply(rootProject, springBootProject);
     }
 }

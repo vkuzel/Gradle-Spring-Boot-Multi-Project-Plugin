@@ -8,8 +8,8 @@ public class DependencyTreePluginFeatures implements PluginFeatures {
     private static final String GENERATE_DEPENDENCY_TREE_TASK_NAME = "generateDependencyTree";
 
     @Override
-    public void apply(Project coreProject) {
-        GenerateDependencyTreeTask generate = coreProject.getTasks().create(GENERATE_DEPENDENCY_TREE_TASK_NAME, GenerateDependencyTreeTask.class);
+    public void apply(Project springBootProject) {
+        GenerateDependencyTreeTask generate = springBootProject.getTasks().create(GENERATE_DEPENDENCY_TREE_TASK_NAME, GenerateDependencyTreeTask.class);
         String description = "Generates a project dependency tree to a file.";
         description += " File contains java-serialized object of the " + Node.class.getCanonicalName() + " class.";
         generate.setDescription(description);

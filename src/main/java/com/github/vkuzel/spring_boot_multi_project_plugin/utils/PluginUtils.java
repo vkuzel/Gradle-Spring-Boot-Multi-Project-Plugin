@@ -4,8 +4,12 @@ import org.gradle.api.Project;
 import org.gradle.api.plugins.ExtraPropertiesExtension;
 import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.tasks.SourceSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class PluginUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PluginUtils.class);
 
     private PluginUtils() {
     }
@@ -18,17 +22,28 @@ public final class PluginUtils {
                     .filter(sourceSet -> SourceSet.MAIN_SOURCE_SET_NAME.equals(sourceSet.getName()))
                     .findAny()
                     .orElse(null);
+        } else {
+            LOGGER.warn("Project " + project.getName() + " does not have JavaPlugin applied! It's main source set cannot be found!");
         }
         return null;
     }
 
     public static String getExtraProperty(Project project, String propertyName, String defaultValue) {
+        LOGGER.debug("Getting extra property " + propertyName);
         ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties();
         if (ext != null && ext.has(propertyName)) {
             Object property = ext.get(propertyName);
-            if (property != null && property instanceof String) { // TODO Log if property is not string, etc.
-                return (String) property;
+            if (property != null) {
+                if (property instanceof String) {
+                    return (String) property;
+                } else {
+                    LOGGER.warn("Extra property " + propertyName + " is not string. It's value will be ignored!");
+                }
+            } else {
+                LOGGER.debug("Extra property " + propertyName + " is null.");
             }
+        } else {
+            LOGGER.debug("Extra property " + propertyName + " is not set.");
         }
         return defaultValue;
     }

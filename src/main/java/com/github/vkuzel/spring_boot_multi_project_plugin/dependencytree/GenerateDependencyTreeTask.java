@@ -5,13 +5,19 @@ import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier;
-import org.gradle.api.artifacts.result.*;
+import org.gradle.api.artifacts.result.ResolutionResult;
+import org.gradle.api.artifacts.result.ResolvedComponentResult;
+import org.gradle.api.artifacts.result.ResolvedDependencyResult;
 import org.gradle.api.tasks.TaskAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class GenerateDependencyTreeTask extends DefaultTask {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenerateDependencyTreeTask.class);
 
     private static final String DEPENDENCY_TREE_PATH_PROPERTY = "dependencyTreePath";
     private static final String DEPENDENCY_TREE_DEFAULT_PATH = "projectDependencyTree.ser";
@@ -20,10 +26,11 @@ public class GenerateDependencyTreeTask extends DefaultTask {
     public void generateAndExport() {
         Project rootProject = getProject().getRootProject();
         Node dependencyTree = generateDependencyTree(rootProject);
+        LOGGER.debug("Generated dependency tree: " + dependencyTree.toString());
 
-        System.out.println("Generated dependency tree: " + dependencyTree.toString()); // TODO remove ...
+        // TODO Instance of Path
         String dependencyTreePath = PluginUtils.getExtraProperty(getProject(), DEPENDENCY_TREE_PATH_PROPERTY, DEPENDENCY_TREE_DEFAULT_PATH);
-        System.out.println("Should be stored into: " + dependencyTreePath);
+        LOGGER.debug("Serialized dependency tree will be stored in " + dependencyTreePath);
     }
 
     public Node generateDependencyTree(Project rootProject) {
