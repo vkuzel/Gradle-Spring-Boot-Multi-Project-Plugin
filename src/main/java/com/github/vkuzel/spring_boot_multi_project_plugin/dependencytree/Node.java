@@ -2,10 +2,11 @@ package com.github.vkuzel.spring_boot_multi_project_plugin.dependencytree;
 
 import org.gradle.api.Project;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Node {
+public class Node implements Serializable {
     private final String projectName;
     private final boolean rootProject;
     private final String projectDir;

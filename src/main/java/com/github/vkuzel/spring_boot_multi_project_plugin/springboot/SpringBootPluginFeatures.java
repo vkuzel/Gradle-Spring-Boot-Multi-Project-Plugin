@@ -22,9 +22,7 @@ public class SpringBootPluginFeatures implements MultiProjectPluginFeatures {
             FindMainClassTask findMainClassTask = (FindMainClassTask) task;
             // Java plugin has to be applied on core-project before this method is called!
             SourceSet mainSourceSet = PluginUtils.findMainSourceSet(springBootProject);
-            if (mainSourceSet != null) {
-                findMainClassTask.setMainClassSourceSetOutput(mainSourceSet.getOutput());
-            }
+            findMainClassTask.setMainClassSourceSetOutput(mainSourceSet.getOutput());
         });
     }
 }

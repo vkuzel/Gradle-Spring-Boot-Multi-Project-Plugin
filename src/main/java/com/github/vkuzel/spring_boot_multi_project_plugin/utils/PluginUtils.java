@@ -7,6 +7,10 @@ import org.gradle.api.tasks.SourceSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public final class PluginUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PluginUtils.class);
@@ -23,9 +27,8 @@ public final class PluginUtils {
                     .findAny()
                     .orElse(null);
         } else {
-            LOGGER.warn("Project " + project.getName() + " does not have JavaPlugin applied! It's main source set cannot be found!");
+            throw new IllegalStateException("Project " + project.getName() + " does not have JavaPlugin applied! It's main source set cannot be found!");
         }
-        return null;
     }
 
     public static String getExtraProperty(Project project, String propertyName, String defaultValue) {
@@ -46,5 +49,15 @@ public final class PluginUtils {
             LOGGER.debug("Extra property " + propertyName + " is not set.");
         }
         return defaultValue;
+    }
+
+    public static void ensureDirectoryExists(Path directory) {
+        if (!Files.exists(directory)) {
+            try {
+                Files.createDirectories(directory);
+            } catch (IOException e) {
+                throw new IllegalStateException("Directory " + directory.toString() + " cannot be created!", e);
+            }
+        }
     }
 }
