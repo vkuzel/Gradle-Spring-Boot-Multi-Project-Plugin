@@ -1,4 +1,4 @@
-package com.github.vkuzel.spring_boot_multi_project_plugin.dependencytree;
+package com.github.vkuzel.spring_boot_multi_project_plugin.dependencygraph;
 
 import org.gradle.api.Project;
 

@@ -1,6 +1,6 @@
 package com.github.vkuzel.spring_boot_multi_project_plugin;
 
-import com.github.vkuzel.spring_boot_multi_project_plugin.dependencytree.DependencyTreePluginFeatures;
+import com.github.vkuzel.spring_boot_multi_project_plugin.dependencygraph.DependencyGraphPluginFeatures;
 import com.github.vkuzel.spring_boot_multi_project_plugin.springboot.SpringBootPluginFeatures;
 import com.github.vkuzel.spring_boot_multi_project_plugin.utils.PluginUtils;
 import org.gradle.api.Plugin;
@@ -38,7 +38,7 @@ public class SpringBootMultiProjectPlugin implements Plugin<Project> {
             LOGGER.warn("SpringBoot project is same as root project which does not make too much sense!");
         }
 
-        new DependencyTreePluginFeatures().apply(springBootProject);
+        new DependencyGraphPluginFeatures().apply(springBootProject);
         new SpringBootPluginFeatures().apply(rootProject, springBootProject);
     }
 }

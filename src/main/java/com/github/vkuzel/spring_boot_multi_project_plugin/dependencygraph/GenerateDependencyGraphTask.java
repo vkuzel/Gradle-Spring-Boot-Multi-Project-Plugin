@@ -1,4 +1,4 @@
-package com.github.vkuzel.spring_boot_multi_project_plugin.dependencytree;
+package com.github.vkuzel.spring_boot_multi_project_plugin.dependencygraph;
 
 import com.github.vkuzel.spring_boot_multi_project_plugin.utils.PluginUtils;
 import org.gradle.api.DefaultTask;
@@ -22,31 +22,31 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GenerateDependencyTreeTask extends DefaultTask {
+public class GenerateDependencyGraphTask extends DefaultTask {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GenerateDependencyTreeTask.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenerateDependencyGraphTask.class);
 
-    private static final String DEPENDENCY_TREE_PATH_PROPERTY = "dependencyTreePath";
-    private static final String DEPENDENCY_TREE_DEFAULT_PATH = "projectDependencyTree.ser";
+    private static final String DEPENDENCY_GRAPH_PATH_PROPERTY = "dependencyGraphPath";
+    private static final String DEPENDENCY_GRAPH_DEFAULT_PATH = "projectDependencyGraph.ser";
 
     @TaskAction
     public void generateAndExport() {
         Project rootProject = getProject().getRootProject();
-        Node dependencyTree = generateDependencyTree(rootProject);
-        LOGGER.debug("Generated dependency tree: " + dependencyTree.toString());
+        Node dependencyGraph = generateDependencyGraph(rootProject);
+        LOGGER.debug("Generated dependency graph: " + dependencyGraph.toString());
 
-        String dependencyTreePath = PluginUtils.getExtraProperty(getProject(), DEPENDENCY_TREE_PATH_PROPERTY, DEPENDENCY_TREE_DEFAULT_PATH);
-        Path path = getResourcesDir().resolve(dependencyTreePath);
+        String dependencyGraphPath = PluginUtils.getExtraProperty(getProject(), DEPENDENCY_GRAPH_PATH_PROPERTY, DEPENDENCY_GRAPH_DEFAULT_PATH);
+        Path path = getResourcesDir().resolve(dependencyGraphPath);
         PluginUtils.ensureDirectoryExists(path.getParent());
-        LOGGER.warn("Serialized dependency tree will be stored in " + path.toString());
+        LOGGER.warn("Serialized dependency graph will be stored in " + path.toString());
 
         try (
                 OutputStream outputStream = Files.newOutputStream(path);
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)
         ) {
-            objectOutputStream.writeObject(dependencyTree);
+            objectOutputStream.writeObject(dependencyGraph);
         } catch (IOException e) {
-            throw new IllegalStateException("Dependency tree cannot be written into file!", e);
+            throw new IllegalStateException("Dependency graph cannot be written into file!", e);
         }
     }
 
@@ -56,7 +56,7 @@ public class GenerateDependencyTreeTask extends DefaultTask {
         for (File dir : mainSourceSet.getResources().getSrcDirs()) {
             if (resourcesDir != null) {
                 LOGGER.warn("Project " + getProject().getName() + " has more than one resource dirs!" +
-                        "This " + resourcesDir.getAbsolutePath() + " will be used to store serialized dependency tree.");
+                        "This " + resourcesDir.getAbsolutePath() + " will be used to store serialized dependency graph.");
                 break;
             }
             resourcesDir = dir;
@@ -67,7 +67,7 @@ public class GenerateDependencyTreeTask extends DefaultTask {
         return resourcesDir.toPath();
     }
 
-    public Node generateDependencyTree(Project rootProject) {
+    public Node generateDependencyGraph(Project rootProject) {
         Configuration compileConfiguration = rootProject.getConfigurations().getByName("compile");
         ResolutionResult result = compileConfiguration.getIncoming().getResolutionResult();
         return getDependencyNode(result.getRoot());

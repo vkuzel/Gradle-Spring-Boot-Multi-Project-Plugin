@@ -1,8 +1,8 @@
 package com.github.vkuzel.spring_boot_multi_project_plugin;
 
-import com.github.vkuzel.spring_boot_multi_project_plugin.dependencytree.DependencyTreePluginFeatures;
-import com.github.vkuzel.spring_boot_multi_project_plugin.dependencytree.GenerateDependencyTreeTask;
-import com.github.vkuzel.spring_boot_multi_project_plugin.dependencytree.Node;
+import com.github.vkuzel.spring_boot_multi_project_plugin.dependencygraph.DependencyGraphPluginFeatures;
+import com.github.vkuzel.spring_boot_multi_project_plugin.dependencygraph.GenerateDependencyGraphTask;
+import com.github.vkuzel.spring_boot_multi_project_plugin.dependencygraph.Node;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.plugins.JavaPlugin;
@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import java.util.Set;
 
-public class GenerateDependencyTreeTest {
+public class GenerateDependencyGraphTest {
 
     private Project testProject;
 
@@ -30,24 +30,24 @@ public class GenerateDependencyTreeTest {
         testProject.getDependencies().add("compile", subproject1);
         subproject1.getDependencies().add("compile", subproject2);
 
-        (new DependencyTreePluginFeatures()).apply(testProject);
+        (new DependencyGraphPluginFeatures()).apply(testProject);
     }
 
     @Test
     public void applyPluginTest() {
-        Set<Task> tasks = testProject.getTasksByName("generateDependencyTree", false);
+        Set<Task> tasks = testProject.getTasksByName("generateDependencyGraph", false);
         Assert.assertEquals(1, tasks.size());
 
         Task anyTask = tasks.stream().findAny().orElse(null);
-        Assert.assertTrue(GenerateDependencyTreeTask.class.isInstance(anyTask));
+        Assert.assertTrue(GenerateDependencyGraphTask.class.isInstance(anyTask));
     }
 
     @Test
-    public void generateDependencyTreeTest() {
-        GenerateDependencyTreeTask task = (GenerateDependencyTreeTask) testProject.getTasksByName("generateDependencyTree", false)
+    public void generateDependencyGraphTest() {
+        GenerateDependencyGraphTask task = (GenerateDependencyGraphTask) testProject.getTasksByName("generateDependencyGraph", false)
                 .stream().findAny().get();
 
-        Node parent = task.generateDependencyTree(testProject);
+        Node parent = task.generateDependencyGraph(testProject);
         Assert.assertEquals("testProject", parent.getProjectName());
         Assert.assertTrue(parent.isRootProject());
 
