@@ -1,5 +1,6 @@
 package com.github.vkuzel.spring_boot_multi_project_plugin.dependencygraph;
 
+import com.github.vkuzel.gradle_dependency_graph.Node;
 import com.github.vkuzel.spring_boot_multi_project_plugin.utils.PluginUtils;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
@@ -70,18 +71,27 @@ public class GenerateDependencyGraphTask extends DefaultTask {
     public Node generateDependencyGraph(Project rootProject) {
         Configuration compileConfiguration = rootProject.getConfigurations().getByName("compile");
         ResolutionResult result = compileConfiguration.getIncoming().getResolutionResult();
-        return getDependencyNode(result.getRoot());
+        return getNode(result.getRoot());
     }
 
-    private Node getDependencyNode(ResolvedComponentResult componentResult) {
+    private Node getNode(ResolvedComponentResult componentResult) {
         List<Node> children = componentResult.getDependencies().stream()
                 .filter(ResolvedDependencyResult.class::isInstance)
                 .map(dr -> ((ResolvedDependencyResult) dr).getSelected())
                 .filter(cr -> ProjectComponentIdentifier.class.isInstance(cr.getId()))
-                .map(this::getDependencyNode)
+                .map(this::getNode)
                 .collect(Collectors.toList());
 
         ProjectComponentIdentifier projectIdentifier = (ProjectComponentIdentifier) componentResult.getId();
-        return new Node(getProject().findProject(projectIdentifier.getProjectPath()), children);
+        return buildNode(getProject().findProject(projectIdentifier.getProjectPath()), children);
+    }
+
+    private Node buildNode(Project project, List<Node> children) {
+        return new Node(
+                project.getName(),
+                project.getDepth() == 0,
+                project.getProjectDir().getName(),
+                children
+        );
     }
 }

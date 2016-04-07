@@ -1,8 +1,8 @@
 package com.github.vkuzel.spring_boot_multi_project_plugin;
 
+import com.github.vkuzel.gradle_dependency_graph.Node;
 import com.github.vkuzel.spring_boot_multi_project_plugin.dependencygraph.DependencyGraphPluginFeatures;
 import com.github.vkuzel.spring_boot_multi_project_plugin.dependencygraph.GenerateDependencyGraphTask;
-import com.github.vkuzel.spring_boot_multi_project_plugin.dependencygraph.Node;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.plugins.JavaPlugin;
