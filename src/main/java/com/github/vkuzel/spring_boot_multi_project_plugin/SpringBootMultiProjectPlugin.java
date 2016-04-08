@@ -18,11 +18,18 @@ public class SpringBootMultiProjectPlugin implements Plugin<Project> {
 
     private static final String SPRING_BOOT_PROJECT_NAME_PROPERTY = "springBootProject";
     private static final String SPRING_BOOT_PROJECT_DEFAULT_NAME = "core";
+    private static final String DEPENDENCY_GRAPH_MAVEN_REPOSITORY = "https://jitpack.io";
+    private static final String DEPENDENCY_GRAPH_DEPENDENCY = "com.github.vkuzel:Gradle-Dependency-Graph:1.0.0";
 
     @Override
     public void apply(Project rootProject) {
         Set<Project> allProjects = rootProject.getAllprojects();
-        allProjects.forEach(project -> project.getRepositories().mavenCentral());
+        allProjects.forEach(project -> {
+            project.getRepositories().mavenCentral();
+            project.getRepositories().maven(mavenArtifactRepository -> {
+                mavenArtifactRepository.setUrl(DEPENDENCY_GRAPH_MAVEN_REPOSITORY);
+            });
+        });
 
         Set<Project> subProjects = rootProject.getSubprojects();
         subProjects.forEach(project -> {
@@ -38,6 +45,7 @@ public class SpringBootMultiProjectPlugin implements Plugin<Project> {
             LOGGER.warn("SpringBoot project is same as root project which does not make too much sense!");
         }
 
+        springBootProject.getDependencies().add("compile", DEPENDENCY_GRAPH_DEPENDENCY);
         new DependencyGraphPluginFeatures().apply(springBootProject);
         new SpringBootPluginFeatures().apply(rootProject, springBootProject);
     }
