@@ -38,11 +38,14 @@ public class SpringBootMultiProjectPlugin implements Plugin<Project> {
         });
 
         String springBootProjectName = PluginUtils.getExtraProperty(rootProject, SPRING_BOOT_PROJECT_NAME_PROPERTY, SPRING_BOOT_PROJECT_DEFAULT_NAME);
-        LOGGER.debug("SpringBoot project name: " + springBootProjectName);
+        LOGGER.debug("Spring Boot project name: " + springBootProjectName);
         Project springBootProject = rootProject.findProject(springBootProjectName);
+        if (springBootProject == null) {
+            throw new IllegalArgumentException("Spring Boot project " + springBootProjectName + " was not found! Make sure you configured the " + SPRING_BOOT_PROJECT_NAME_PROPERTY + " correctly.");
+        }
 
         if (rootProject.equals(springBootProject)) {
-            LOGGER.warn("SpringBoot project is same as root project which does not make too much sense!");
+            LOGGER.warn("Spring Boot project is same as root project which does not make too much sense!");
         }
 
         springBootProject.getDependencies().add("compile", DEPENDENCY_GRAPH_DEPENDENCY);

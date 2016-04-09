@@ -23,20 +23,26 @@ For example executing database scripts.
 
 ## Getting Started
 
-Add plugin dependency to the root project's `build.gradle` file and apply plugin.
+Add plugin dependency into the root project's `build.gradle` file. Then configure name of the Spring Boot sub-project and finally apply the plugin.
 
 ````groovy
-...
-````
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+    dependencies {
+        classpath "com.github.vkuzel:Gradle-Spring-Boot-Multi-Project-Plugin:1.0.0"
+    }
+}
 
-In the same file configure name of the Spring Boot sub-project.
-
-````groovy
 ext {
     // This property is used by plugin to find Spring Boot subproject and to
     // fix the behaviour of findMainClass task.
     springBootProject = "spring-boot-subproject" // Default value is "core"
 }
+
+apply plugin: "spring-boot-multi-project"
 ````
 
 In Spring Boot sub-project's `build.gradle` add path to the serialized form of dependency graph.
