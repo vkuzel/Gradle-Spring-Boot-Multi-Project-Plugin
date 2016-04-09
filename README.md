@@ -1,6 +1,8 @@
 # Spring Boot Multi-Project Gradle Plugin
 
-This plugin wraps Spring Boot Gradle Plugin and makes it easier to use in a multi-project setup.
+[![](https://jitpack.io/v/vkuzel/Gradle-Spring-Boot-Multi-Project-Plugin.svg)](https://jitpack.io/#vkuzel/Gradle-Spring-Boot-Multi-Project-Plugin)
+
+This plugin wraps Spring Boot Gradle Plugin and makes it easier to use in a multi-project build.
 Will be especially useful if you have Spring Boot project as a sub-project as it is shown in following diagram.
 
 ````
@@ -15,7 +17,7 @@ See the [Gradle Multi Project Development Template](https://github.com/vkuzel/Gr
 
 ## Features
 
-* Adds [Maven Central Repository](http://search.maven.org) and [JitPack Repository](https://jitpack.io) to all projects in the multi-project setup.
+* Adds [Maven Central Repository](http://search.maven.org) and [JitPack Repository](https://jitpack.io) to all projects in the multi-project build.
 * Applies [Spring Boot Gradle plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-gradle-plugin.html) to a root project and preserves `findMainClass` task functionality.
 * Adds new `generateDependencyGraph` task that stores serialized version of project dependencies into file.
 This comes handy in the Spring Boot application when you need to perform some actions in certain order during application's initial phase.
