@@ -18,7 +18,7 @@ public class SpringBootMultiProjectPlugin implements Plugin<Project> {
 
     private static final String SPRING_BOOT_PROJECT_NAME_PROPERTY = "springBootProject";
     private static final String SPRING_BOOT_PROJECT_DEFAULT_NAME = "core";
-    private static final String DEPENDENCY_GRAPH_MAVEN_REPOSITORY = "https://jitpack.io";
+    private static final String JITPACK_REPOSITORY = "https://jitpack.io";
     private static final String DEPENDENCY_GRAPH_DEPENDENCY = "com.github.vkuzel:Gradle-Dependency-Graph:1.0.0";
 
     @Override
@@ -27,7 +27,7 @@ public class SpringBootMultiProjectPlugin implements Plugin<Project> {
         allProjects.forEach(project -> {
             project.getRepositories().mavenCentral();
             project.getRepositories().maven(mavenArtifactRepository -> {
-                mavenArtifactRepository.setUrl(DEPENDENCY_GRAPH_MAVEN_REPOSITORY);
+                mavenArtifactRepository.setUrl(JITPACK_REPOSITORY);
             });
         });
 

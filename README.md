@@ -1,19 +1,64 @@
 # Spring Boot Multi-Project Gradle Plugin
 
-This is wrapper of Spring Boot Gradle Plugin so it's easier to use with multi-project configuration.
+This plugin wraps Spring Boot Gradle Plugin and makes it easier to use in a multi-project setup.
+Will be especially useful if you have Spring Boot project as a sub-project as it is shown in following diagram.
 
-TODO Details about this plugin and it's setup.
+````
+root project <-- Here's applied the plugin
+|
++--- spring boot project <-- Sub-project with Spring Boot application
+|
+\--- some other subproject
+````
+
+See the [Gradle Multi Project Development Template](https://github.com/vkuzel/Gradle-Multi-Project-Development-Template) for more details about usage details.
+
+## Features
+
+* Adds [Maven Central Repository](http://search.maven.org) and [JitPack Repository](https://jitpack.io) to all projects in the multi-project setup.
+* Applies [Spring Boot Gradle plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-gradle-plugin.html) to a root project and preserves `findMainClass` task functionality.
+* Adds new `generateDependencyGraph` task that stores serialized version of project dependencies into file.
+This comes handy in the Spring Boot application when you need to perform some actions in certain order during application's initial phase.
+For example executing database scripts.
+
+## Getting Started
+
+Add plugin dependency to the root project's `build.gradle` file and apply plugin.
 
 ````groovy
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.3.3.RELEASE"
-        classpath files('lib/spring-boot-multi-project-gradle-plugin-0.0.1-SNAPSHOT.jar')
-    }
-}
+...
+````
 
-apply plugin: 'spring-boot-multi-project'
+In the same file configure name of the Spring Boot sub-project.
+
+````groovy
+ext {
+    // This property is used by plugin to find Spring Boot subproject and to
+    // fix the behaviour of findMainClass task.
+    springBootProject = "spring-boot-subproject" // Default value is "core"
+}
+````
+
+In Spring Boot sub-project's `build.gradle` add path to the serialized form of dependency graph.
+This is path relative to the sub-project's resources directory.
+
+````groovy
+ext {
+    // When executing the generateDependencyGraph task serialized of dependency
+    // graph will be stored into this file.
+    dependencyGraphPath = "MyGraph.ser" // Default value is "projectDependencyGraph.ser"
+}
+````
+
+In root project run the `generateDependencyGraph` to generate dependency graph to file.
+Class used to preserve the graph can be found in [Gradle Dependency Graph](https://github.com/vkuzel/Gradle-Dependency-Graph) project.
+
+````bash
+gradle generateDependencyGraph
+````
+
+Start the application.
+
+````bash
+gradle bootRun
 ````

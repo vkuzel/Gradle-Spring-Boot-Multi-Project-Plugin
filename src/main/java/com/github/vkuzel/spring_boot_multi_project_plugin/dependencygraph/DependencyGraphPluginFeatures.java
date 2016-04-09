@@ -11,9 +11,10 @@ public class DependencyGraphPluginFeatures implements PluginFeatures {
     @Override
     public void apply(Project springBootProject) {
         GenerateDependencyGraphTask generate = springBootProject.getTasks().create(GENERATE_DEPENDENCY_GRAPH_TASK_NAME, GenerateDependencyGraphTask.class);
-        String description = "Generates a project dependency graph to a file.";
-        description += " File contains java-serialized object of the " + Node.class.getCanonicalName() + " class.";
-        description += " Object's class is included in indenpendent project https://github.com/vkuzel/Gradle-Dependency-Graph";
+        String description = "Generates a project dependency graph and serializes it into a file.";
+        description += " Default location of the file is Spring Boot project's resource dir/projectDependencyGraph.ser.";
+        description += " Serialized file is of type " + Node.class.getCanonicalName() + ".";
+        description += " This class can be found in indenpendent project https://github.com/vkuzel/Gradle-Dependency-Graph";
         generate.setDescription(description);
         generate.setGroup("build");
     }
