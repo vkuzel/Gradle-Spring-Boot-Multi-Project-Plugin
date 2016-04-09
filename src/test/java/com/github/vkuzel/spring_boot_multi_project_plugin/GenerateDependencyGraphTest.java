@@ -48,15 +48,12 @@ public class GenerateDependencyGraphTest {
                 .stream().findAny().get();
 
         Node parent = task.generateDependencyGraph(testProject);
-        Assert.assertEquals("testProject", parent.getProjectName());
-        Assert.assertTrue(parent.isRootProject());
+        Assert.assertEquals("testProject", parent.getProject().getName());
 
         Node firstChild = parent.getChildren().get(0);
-        Assert.assertEquals("subproject1", firstChild.getProjectName());
-        Assert.assertFalse(firstChild.isRootProject());
+        Assert.assertEquals("subproject1", firstChild.getProject().getName());
 
         Node secondChild = firstChild.getChildren().get(0);
-        Assert.assertEquals("subproject2", secondChild.getProjectName());
-        Assert.assertFalse(secondChild.isRootProject());
+        Assert.assertEquals("subproject2", secondChild.getProject().getName());
     }
 }

@@ -37,7 +37,7 @@ public class GenerateDependencyGraphTask extends DefaultTask {
         LOGGER.debug("Generated dependency graph: " + dependencyGraph.toString());
 
         String dependencyGraphPath = PluginUtils.getExtraProperty(getProject(), DEPENDENCY_GRAPH_PATH_PROPERTY, DEPENDENCY_GRAPH_DEFAULT_PATH);
-        Path path = getResourcesDir().resolve(dependencyGraphPath);
+        Path path = getResourcesDir(rootProject).resolve(dependencyGraphPath);
         PluginUtils.ensureDirectoryExists(path.getParent());
         LOGGER.warn("Serialized dependency graph will be stored in " + path.toString());
 
@@ -51,19 +51,19 @@ public class GenerateDependencyGraphTask extends DefaultTask {
         }
     }
 
-    private Path getResourcesDir() {
-        SourceSet mainSourceSet = PluginUtils.findMainSourceSet(getProject());
+    private Path getResourcesDir(Project project) {
+        SourceSet mainSourceSet = PluginUtils.findMainSourceSet(project);
         File resourcesDir = null;
         for (File dir : mainSourceSet.getResources().getSrcDirs()) {
             if (resourcesDir != null) {
-                LOGGER.warn("Project " + getProject().getName() + " has more than one resource dirs!" +
+                LOGGER.warn("Project " + project.getName() + " has more than one resource dirs!" +
                         "This " + resourcesDir.getAbsolutePath() + " will be used to store serialized dependency graph.");
                 break;
             }
             resourcesDir = dir;
         }
         if (resourcesDir == null) {
-            throw new IllegalStateException("There has been no resources dir found for project " + getProject().getName());
+            throw new IllegalStateException("There has been no resources dir found for project " + project.getName());
         }
         return resourcesDir.toPath();
     }
@@ -89,7 +89,6 @@ public class GenerateDependencyGraphTask extends DefaultTask {
     private Node buildNode(Project project, List<Node> children) {
         return new Node(
                 project.getName(),
-                project.getDepth() == 0,
                 project.getProjectDir().getName(),
                 children
         );

@@ -34,7 +34,7 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath "com.github.vkuzel:Gradle-Spring-Boot-Multi-Project-Plugin:1.0.0"
+        classpath "com.github.vkuzel:Gradle-Spring-Boot-Multi-Project-Plugin:1.2.0"
     }
 }
 
@@ -48,7 +48,7 @@ apply plugin: "spring-boot-multi-project"
 ````
 
 In Spring Boot sub-project's `build.gradle` add path to the serialized form of dependency graph.
-This is path relative to the sub-project's resources directory.
+This is path relative to the **root-project's** resources directory.
 
 ````groovy
 ext {

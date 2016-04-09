@@ -19,7 +19,7 @@ public class SpringBootMultiProjectPlugin implements Plugin<Project> {
     private static final String SPRING_BOOT_PROJECT_NAME_PROPERTY = "springBootProject";
     private static final String SPRING_BOOT_PROJECT_DEFAULT_NAME = "core";
     private static final String JITPACK_REPOSITORY = "https://jitpack.io";
-    private static final String DEPENDENCY_GRAPH_DEPENDENCY = "com.github.vkuzel:Gradle-Dependency-Graph:1.0.0";
+    private static final String DEPENDENCY_GRAPH_DEPENDENCY = "com.github.vkuzel:Gradle-Dependency-Graph:1.1.1";
 
     @Override
     public void apply(Project rootProject) {
