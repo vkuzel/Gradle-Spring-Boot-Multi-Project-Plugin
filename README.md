@@ -34,7 +34,7 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath "com.github.vkuzel:Gradle-Spring-Boot-Multi-Project-Plugin:1.1.0"
+        classpath "com.github.vkuzel:Gradle-Spring-Boot-Multi-Project-Plugin:1.2.0"
     }
 }
 
@@ -55,6 +55,10 @@ ext {
     // When executing the generateDependencyGraph task serialized of dependency
     // graph will be stored into this file.
     dependencyGraphPath = "MyGraph.ser" // Default value is "projectDependencyGraph.ser"
+
+    // Possibility to suppress Spring Boot plugin's findMainClass task and to
+    // set the main class explicitly.
+    mainClassName = "your.class.Name"
 }
 ````
 

@@ -10,6 +10,7 @@ import org.springframework.boot.gradle.run.FindMainClassTask;
 public class SpringBootPluginFeatures implements MultiProjectPluginFeatures {
 
     private static final String FIND_MAIN_CLASS_TASK_NAME = "findMainClass";
+    private static final String MAIN_CLASS_NAME_PROPERTY = "mainClassName";
 
     @Override
     public void apply(Project rootProject, Project springBootProject) {
@@ -23,6 +24,17 @@ public class SpringBootPluginFeatures implements MultiProjectPluginFeatures {
             // Java plugin has to be applied on core-project before this method is called!
             SourceSet mainSourceSet = PluginUtils.findMainSourceSet(springBootProject);
             findMainClassTask.setMainClassSourceSetOutput(mainSourceSet.getOutput());
+
+            findMainClassTask.setMainClassNameProperty();
+            findMainClassTask.doFirst(t -> {
+                // MainClass property configured in springBootProject will be copied
+                // to rootProject because rootProject does have SpringBoot plugin
+                // applied.
+                String mainClass = PluginUtils.getExtraProperty(springBootProject, MAIN_CLASS_NAME_PROPERTY, null);
+                if (mainClass != null) {
+                    PluginUtils.setExtraProperty(rootProject, MAIN_CLASS_NAME_PROPERTY, mainClass);
+                }
+            });
         });
     }
 }

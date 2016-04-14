@@ -32,7 +32,7 @@ public final class PluginUtils {
     }
 
     public static String getExtraProperty(Project project, String propertyName, String defaultValue) {
-        LOGGER.debug("Getting extra property " + propertyName);
+        LOGGER.debug("Getting extra property " + propertyName + " from project " + project.getName());
         ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties();
         if (ext != null && ext.has(propertyName)) {
             Object property = ext.get(propertyName);
@@ -49,6 +49,20 @@ public final class PluginUtils {
             LOGGER.debug("Extra property " + propertyName + " is not set.");
         }
         return defaultValue;
+    }
+
+    public static void setExtraProperty(Project project, String propertyName, String propertyValue) {
+        LOGGER.debug("Setting extra property " + propertyName + "=" + propertyValue + " to project " + project.getName());
+        ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties();
+        if (ext != null) {
+            if (ext.has(propertyName)) {
+                LOGGER.warn("Extra property " + propertyName + " is already set it will be overwritten.");
+            }
+
+            ext.set(propertyName, propertyValue);
+        } else {
+            LOGGER.debug("Extra properties in project " + project.getName() + " are not available.");
+        }
     }
 
     public static void ensureDirectoryExists(Path directory) {
