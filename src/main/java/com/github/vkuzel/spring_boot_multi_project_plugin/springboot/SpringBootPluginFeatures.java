@@ -25,7 +25,6 @@ public class SpringBootPluginFeatures implements MultiProjectPluginFeatures {
             SourceSet mainSourceSet = PluginUtils.findMainSourceSet(springBootProject);
             findMainClassTask.setMainClassSourceSetOutput(mainSourceSet.getOutput());
 
-            findMainClassTask.setMainClassNameProperty();
             findMainClassTask.doFirst(t -> {
                 // MainClass property configured in springBootProject will be copied
                 // to rootProject because rootProject does have SpringBoot plugin

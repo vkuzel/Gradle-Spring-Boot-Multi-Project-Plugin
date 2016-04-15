@@ -34,7 +34,7 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath "com.github.vkuzel:Gradle-Spring-Boot-Multi-Project-Plugin:1.2.0"
+        classpath "com.github.vkuzel:Gradle-Spring-Boot-Multi-Project-Plugin:1.2.1"
     }
 }
 
