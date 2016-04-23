@@ -1,6 +1,6 @@
 package com.github.vkuzel.spring_boot_multi_project_plugin;
 
-import com.github.vkuzel.spring_boot_multi_project_plugin.dependencygraph.DependencyGraphPluginFeatures;
+import com.github.vkuzel.spring_boot_multi_project_plugin.projectdependencies.ProjectDependenciesPluginFeatures;
 import com.github.vkuzel.spring_boot_multi_project_plugin.springboot.SpringBootPluginFeatures;
 import com.github.vkuzel.spring_boot_multi_project_plugin.utils.PluginUtils;
 import org.gradle.api.Plugin;
@@ -19,7 +19,7 @@ public class SpringBootMultiProjectPlugin implements Plugin<Project> {
     private static final String SPRING_BOOT_PROJECT_NAME_PROPERTY = "springBootProject";
     private static final String SPRING_BOOT_PROJECT_DEFAULT_NAME = "core";
     private static final String JITPACK_REPOSITORY = "https://jitpack.io";
-    private static final String DEPENDENCY_GRAPH_DEPENDENCY = "com.github.vkuzel:Gradle-Dependency-Graph:1.1.1";
+    private static final String PROJECT_DEPENDENCIES_DEPENDENCY = "com.github.vkuzel:Gradle-Project-Dependencies:3.0.0";
 
     @Override
     public void apply(Project rootProject) {
@@ -48,8 +48,8 @@ public class SpringBootMultiProjectPlugin implements Plugin<Project> {
             LOGGER.warn("Spring Boot project is same as root project which does not make too much sense!");
         }
 
-        springBootProject.getDependencies().add("compile", DEPENDENCY_GRAPH_DEPENDENCY);
-        new DependencyGraphPluginFeatures().apply(springBootProject);
+        springBootProject.getDependencies().add("compile", PROJECT_DEPENDENCIES_DEPENDENCY);
+        new ProjectDependenciesPluginFeatures().apply(springBootProject);
         new SpringBootPluginFeatures().apply(rootProject, springBootProject);
     }
 }

@@ -8,11 +8,11 @@ repositories {
 dependencies {
     compile gradleApi()
     compile 'org.springframework.boot:spring-boot-gradle-plugin:1.3.3.RELEASE';
-    compile 'com.github.vkuzel:Gradle-Dependency-Graph:1.1.1'
+    compile 'com.github.vkuzel:Gradle-Project-Dependencies:3.0.0'
     testCompile gradleTestKit()
 }
 
 jar {
     baseName = 'spring-boot-multi-project-gradle-plugin'
-    version = '1.2.1'
+    version = '2.0.0'
 }
