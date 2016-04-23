@@ -14,7 +14,7 @@ root project <-- Here's applied the plugin
 \--- some other subproject
 ````
 
-See the [Gradle Multi Project Development Template](https://github.com/vkuzel/Gradle-Multi-Project-Development-Template) for more details about usage details.
+See the [Gradle Multi Project Development Template](https://github.com/vkuzel/Gradle-Multi-Project-Development-Template) for more details about usage of this plugin.
 
 ## Features
 
