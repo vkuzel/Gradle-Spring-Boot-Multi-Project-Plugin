@@ -93,7 +93,7 @@ public class DiscoverAndSaveProjectDependenciesTask extends DefaultTask {
     }
 
     private Path getResourcesDir(Project project) {
-        SourceSet mainSourceSet = PluginUtils.findMainSourceSet(project);
+        SourceSet mainSourceSet = PluginUtils.getSourceSets(project).getByName(SourceSet.MAIN_SOURCE_SET_NAME);
         File resourcesDir = null;
         for (File dir : mainSourceSet.getResources().getSrcDirs()) {
             if (resourcesDir != null) {

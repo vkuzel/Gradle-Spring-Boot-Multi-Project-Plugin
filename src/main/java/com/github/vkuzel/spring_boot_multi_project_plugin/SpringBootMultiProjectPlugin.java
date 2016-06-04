@@ -2,6 +2,7 @@ package com.github.vkuzel.spring_boot_multi_project_plugin;
 
 import com.github.vkuzel.spring_boot_multi_project_plugin.projectdependencies.ProjectDependenciesPluginFeatures;
 import com.github.vkuzel.spring_boot_multi_project_plugin.springboot.SpringBootPluginFeatures;
+import com.github.vkuzel.spring_boot_multi_project_plugin.testsourcesets.TestSourceSetsPluginFeatures;
 import com.github.vkuzel.spring_boot_multi_project_plugin.utils.PluginUtils;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -24,18 +25,10 @@ public class SpringBootMultiProjectPlugin implements Plugin<Project> {
     @Override
     public void apply(Project rootProject) {
         Set<Project> allProjects = rootProject.getAllprojects();
-        allProjects.forEach(project -> {
-            project.getRepositories().mavenCentral();
-            project.getRepositories().maven(mavenArtifactRepository -> {
-                mavenArtifactRepository.setUrl(JITPACK_REPOSITORY);
-            });
-        });
+        addRepositories(allProjects);
 
         Set<Project> subProjects = rootProject.getSubprojects();
-        subProjects.forEach(project -> {
-            new DependencyManagementPluginFeatures().apply(project);
-            project.getPlugins().apply(JavaPlugin.class);
-        });
+        applyDependencyManagementPlugin(subProjects);
 
         String springBootProjectName = PluginUtils.getExtraProperty(rootProject, SPRING_BOOT_PROJECT_NAME_PROPERTY, SPRING_BOOT_PROJECT_DEFAULT_NAME);
         LOGGER.debug("Spring Boot project name: " + springBootProjectName);
@@ -48,8 +41,26 @@ public class SpringBootMultiProjectPlugin implements Plugin<Project> {
             LOGGER.warn("Spring Boot project is same as root project which does not make too much sense!");
         }
 
-        springBootProject.getDependencies().add("compile", PROJECT_DEPENDENCIES_DEPENDENCY);
+        springBootProject.getDependencies().add(JavaPlugin.COMPILE_CONFIGURATION_NAME, PROJECT_DEPENDENCIES_DEPENDENCY);
         new ProjectDependenciesPluginFeatures().apply(springBootProject);
         new SpringBootPluginFeatures().apply(rootProject, springBootProject);
+
+        allProjects.forEach(project -> new TestSourceSetsPluginFeatures().apply(project));
+    }
+
+    private void addRepositories(Set<Project> projects) {
+        projects.forEach(project -> {
+            project.getRepositories().mavenCentral();
+            project.getRepositories().maven(mavenArtifactRepository -> {
+                mavenArtifactRepository.setUrl(JITPACK_REPOSITORY);
+            });
+        });
+    }
+
+    private void applyDependencyManagementPlugin(Set<Project> projects) {
+        projects.forEach(project -> {
+            new DependencyManagementPluginFeatures().apply(project);
+            project.getPlugins().apply(JavaPlugin.class);
+        });
     }
 }

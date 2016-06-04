@@ -14,16 +14,31 @@ root project <-- Here's applied the plugin
 \--- some other subproject
 ````
 
-See the [Gradle Multi Project Development Template](https://github.com/vkuzel/Gradle-Multi-Project-Development-Template) for more details about usage of this plugin.
+See the [Gradle Multi Project Development Template](https://github.com/vkuzel/Gradle-Multi-Project-Development-Template) for more details.
 
 ## Features
 
 * Adds [Maven Central Repository](http://search.maven.org) and [JitPack Repository](https://jitpack.io) to all projects in the multi-project build.
 * Applies [Spring Boot Gradle plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-gradle-plugin.html) to a root project and preserves `findMainClass` task functionality.
-* Adds new `discoverProjectDependencies` task that stores serialized version of project dependencies into file.
-This comes handy in the Spring Boot application when you need to perform some actions in certain order during application's initial phase.
-You can use project dependencies to decide which script should be executed first.
-For example executing database scripts.
+* Adds new `discoverProjectDependencies` task that stores serialized version of project dependencies to file. This can be used while application's runtime to determine which sub-project should execute first, etc.
+* Support for new `testFixtures` source set to store common test classes.
+Heavily inspired by [testFixtures dependencies in Gradle project](https://github.com/gradle/gradle/blob/master/gradle/testFixtures.gradle).
+Other projects of multi-project application can rely on this source set by declaring proper dependency.
+  ````groovy
+  dependencies {
+      // Notice the name of configuration!
+      testCompile (path: ":core-module", configuration: "testFixturesUsageCompile")
+      // Or you can depend on runtime configuration.
+      testRuntime (path: ":core-module", configuration: "testFixturesUsageRuntime")
+  }
+    ````
+  The source set can depend on other projects by declaring `testFixturesCompile` or `testFixturesRuntime` dependencies.
+  ````groovy
+  dependencies {
+      testFixturesCompile "some:library:1.0.0"
+      testFixturesRuntime "other:library:1.0.0"
+  }
+  ````
 
 ## Getting Started
 
@@ -65,8 +80,8 @@ ext {
 }
 ````
 
-In root project run the `discoverProjectDependencies` to generate project dependencies into files.
-Class used to preserve the dependencies can be found in [Gradle Project Dependencies](https://github.com/vkuzel/Gradle-Project-Dependencies).
+In root project run the `discoverProjectDependencies` to store dependencies to files.
+Class used to preserve dependencies can be found in [Gradle Project Dependencies](https://github.com/vkuzel/Gradle-Project-Dependencies).
 
 ````bash
 gradle discoverProjectDependencies
