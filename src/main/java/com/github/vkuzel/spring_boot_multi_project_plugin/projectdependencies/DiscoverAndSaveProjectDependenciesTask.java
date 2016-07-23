@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 
 public class DiscoverAndSaveProjectDependenciesTask extends DefaultTask {
 
+    public static final String TASK_NAME = "discoverProjectDependencies";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(DiscoverAndSaveProjectDependenciesTask.class);
 
     private static final String PROJECT_DEPENDENCIES_PATH_PROPERTY = "serializedProjectDependenciesPath";

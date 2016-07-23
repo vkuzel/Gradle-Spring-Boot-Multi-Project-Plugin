@@ -6,11 +6,9 @@ import org.springframework.boot.gradle.PluginFeatures;
 
 public class ProjectDependenciesPluginFeatures implements PluginFeatures {
 
-    private static final String GENERATE_DEPENDENCY_GRAPH_TASK_NAME = "discoverProjectDependencies";
-
     @Override
     public void apply(Project springBootProject) {
-        DiscoverAndSaveProjectDependenciesTask generate = springBootProject.getTasks().create(GENERATE_DEPENDENCY_GRAPH_TASK_NAME, DiscoverAndSaveProjectDependenciesTask.class);
+        DiscoverAndSaveProjectDependenciesTask generate = springBootProject.getTasks().create(DiscoverAndSaveProjectDependenciesTask.TASK_NAME, DiscoverAndSaveProjectDependenciesTask.class);
         String description = "Discovers project dependencies and serializes it into a file.";
         description += " Default location of the file is project's resource dir/projectDependencies.ser.";
         description += " Serialized file is of type " + ProjectDependencies.class.getCanonicalName() + ".";
