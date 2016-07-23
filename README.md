@@ -24,6 +24,7 @@ See the [Gradle Multi Project Development Template](https://github.com/vkuzel/Gr
 * Support for new `testFixtures` source set to store common test classes.
 Heavily inspired by [testFixtures dependencies in Gradle project](https://github.com/gradle/gradle/blob/master/gradle/testFixtures.gradle).
 Other projects of multi-project application can rely on this source set by declaring proper dependency.
+
   ````groovy
   dependencies {
       // Notice the name of configuration!
@@ -31,7 +32,7 @@ Other projects of multi-project application can rely on this source set by decla
       // Or you can depend on runtime configuration.
       testRuntime (path: ":core-module", configuration: "testFixturesUsageRuntime")
   }
-    ````
+  ````
   The source set can depend on other projects by declaring `testFixturesCompile` or `testFixturesRuntime` dependencies.
   ````groovy
   dependencies {
