@@ -36,7 +36,7 @@ public class DiscoverAndSaveProjectDependenciesTest {
 
     @Test
     public void applyPluginTest() {
-        Set<Task> tasks = testProject.getTasksByName(DiscoverAndSaveProjectDependenciesTask.DISCOVER_PROJECT_DEPENDENCIES, false);
+        Set<Task> tasks = testProject.getTasksByName(DiscoverAndSaveProjectDependenciesTask.DISCOVER_PROJECT_DEPENDENCIES_TASK_NAME, false);
         Assert.assertEquals(1, tasks.size());
 
         Task anyTask = tasks.stream().findAny().orElse(null);
@@ -45,7 +45,7 @@ public class DiscoverAndSaveProjectDependenciesTest {
 
     @Test
     public void discoverProjectDependenciesTest() {
-        DiscoverAndSaveProjectDependenciesTask task = (DiscoverAndSaveProjectDependenciesTask) testProject.getTasksByName(DiscoverAndSaveProjectDependenciesTask.DISCOVER_PROJECT_DEPENDENCIES, false)
+        DiscoverAndSaveProjectDependenciesTask task = (DiscoverAndSaveProjectDependenciesTask) testProject.getTasksByName(DiscoverAndSaveProjectDependenciesTask.DISCOVER_PROJECT_DEPENDENCIES_TASK_NAME, false)
                 .stream().findAny().get();
 
         Map<Project, ProjectDependencies> dependenciesMap = new HashMap<>();
