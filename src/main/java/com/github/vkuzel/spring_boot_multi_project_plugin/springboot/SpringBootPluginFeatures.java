@@ -4,7 +4,7 @@ import com.github.vkuzel.spring_boot_multi_project_plugin.utils.MultiProjectPlug
 import com.github.vkuzel.spring_boot_multi_project_plugin.utils.PluginUtils;
 import org.gradle.api.Project;
 import org.gradle.api.tasks.SourceSet;
-import org.springframework.boot.gradle.SpringBootPlugin;
+import org.springframework.boot.gradle.plugin.SpringBootPlugin;
 import org.springframework.boot.gradle.run.FindMainClassTask;
 
 public class SpringBootPluginFeatures implements MultiProjectPluginFeatures {
