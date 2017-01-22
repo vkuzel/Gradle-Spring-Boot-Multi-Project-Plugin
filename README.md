@@ -28,9 +28,9 @@ Other projects of multi-project application can rely on this source set by decla
   ````groovy
   dependencies {
       // Notice the name of configuration!
-      testCompile (path: ":core-module", configuration: "testFixturesUsageCompile")
+      testCompile project(path: ":core-module", configuration: "testFixturesUsageCompile")
       // Or you can depend on runtime configuration.
-      testRuntime (path: ":core-module", configuration: "testFixturesUsageRuntime")
+      testRuntime project(path: ":core-module", configuration: "testFixturesUsageRuntime")
   }
   ````
   The source set can depend on other projects by declaring `testFixturesCompile` or `testFixturesRuntime` dependencies.
