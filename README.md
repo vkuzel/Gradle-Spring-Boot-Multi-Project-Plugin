@@ -2,6 +2,8 @@
 
 [![](https://jitpack.io/v/vkuzel/Gradle-Spring-Boot-Multi-Project-Plugin.svg)](https://jitpack.io/#vkuzel/Gradle-Spring-Boot-Multi-Project-Plugin)
 
+*Use plugin like an inspiration more like a final product. I've decided to build a new plugin specific for my project Quantum Leap, so development will continue in [different repository](https://github.com/vkuzel/Quantum-Leap-Gradle-Plugin).*
+
 This plugin wraps Spring Boot Gradle Plugin and makes it easier to use in a multi-project build.
 Will be useful if you need to work with project dependencies in your application.
 Plugin has been designed with following project structure in mind.
